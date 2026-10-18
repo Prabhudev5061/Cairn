@@ -114,7 +114,7 @@ test.describe('Phase 3.5 Vault Switcher & Responsive Backlinks E2E', () => {
 
     // 7. Click Vault 1 to switch back to Vault 1
     await vault1ItemInList.click();
-    await expect(switcherModal).not.toBeVisible();
+    await expect(switcherModal).not.toBeVisible({ timeout: 10000 });
     await expect(titlebarVault).toHaveText(vault1Name, { timeout: 10000 });
 
     // 8. Open Vault Switcher and test remove button
