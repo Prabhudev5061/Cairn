@@ -1,0 +1,32 @@
+#+TITLE: Cairn Multi-Format Roadmap
+#+AUTHOR: Cairn Team
+#+FILETAGS: :planning:formats:architecture:
+
+* Cairn Multi-Format Roadmap
+This document tracks the design and milestone progress for multi-format note support in Cairn.
+
+** TODO High-Level Objectives
+- Support plain text formats beyond Markdown: Emacs Org-mode (~.org~), Typst (~.typ~), and AsciiDoc (~.adoc~).
+- Preserve Obsidian-style bidirectional linking across all format boundaries.
+- Cross-link back to [[welcome]] and [[Project Cairn Architecture]].
+
+** DONE Milestone 1: Parser Infrastructure
+- [X] Define FormatPlugin and FormatRegistry in ~src/shared/formats/~
+- [X] Implement metadata extraction for tags, headings, and links
+- [ ] Add unit test matrix for all format extensions
+
+** Milestone 2: Editor Syntax Highlighting
+*** TODO Implement CodeMirror 6 stream languages :dev:high:
+Each format plugin supplies a tokenizer mapped to CodeMirror's highlight tags.
+
+*** TODO Dynamic format switching on note open :dev:
+Ensure smooth transitions between Markdown, Org, Typst, and AsciiDoc without state leakage.
+
+** Milestone 3: Cross-Format Knowledge Graph
+*** DONE Graph visualizer optimization :perf:
+Refer to [[High Performance Raytracer]] and [[Distributed Database Engine]] for algorithm inspiration.
+*** DONE Zero-cost node degrees and format tagging :perf:
+
+** References
+- [[math-and-syntax]]
+- [[unicode-日本語-café]]

@@ -8,22 +8,29 @@ test.describe('Electron smoke test', () => {
     }
 
     const electronApp = await electron.launch({ args });
-    const window = await electronApp.firstWindow();
-    await window.waitForLoadState('domcontentloaded');
+    const page = await electronApp.firstWindow();
+    await page.waitForLoadState('domcontentloaded');
 
-    const pingText = window.locator('[data-testid="ping-result"]');
-    await expect(pingText).toBeVisible({ timeout: 10000 });
-    await expect(pingText).toContainText('Cairn v');
-    await expect(pingText).toContainText(`on ${process.platform}`);
+    const appRoot = page.locator('[data-testid="welcome-screen"], [data-testid="app-titlebar"]');
+    await expect(appRoot).toBeVisible({ timeout: 10000 });
+
+    const pingRes = await page.evaluate(() =>
+      (window as unknown as { cairn: { ping: () => Promise<{ ok: boolean; value: { version: string; platform: string } }> } }).cairn.ping()
+    );
+    expect(pingRes.ok).toBe(true);
+    if (pingRes.ok) {
+      expect(pingRes.value.version).toBeDefined();
+      expect(pingRes.value.platform).toBe(process.platform);
+    }
 
     // Verify Electron security boundaries in renderer
-    const hasNodeProcess = await window.evaluate(() => typeof (window as unknown as { process?: unknown }).process !== 'undefined');
+    const hasNodeProcess = await page.evaluate(() => typeof (window as unknown as { process?: unknown }).process !== 'undefined');
     expect(hasNodeProcess).toBe(false);
 
-    const hasRequire = await window.evaluate(() => typeof (window as unknown as { require?: unknown }).require !== 'undefined');
+    const hasRequire = await page.evaluate(() => typeof (window as unknown as { require?: unknown }).require !== 'undefined');
     expect(hasRequire).toBe(false);
 
-    const hasCairnApi = await window.evaluate(
+    const hasCairnApi = await page.evaluate(
       () => typeof (window as unknown as { cairn?: { ping?: unknown } }).cairn?.ping === 'function'
     );
     expect(hasCairnApi).toBe(true);

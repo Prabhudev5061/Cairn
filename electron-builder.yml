@@ -1,0 +1,50 @@
+appId: com.cairn.app
+productName: Cairn
+directories:
+  output: dist
+  buildResources: build
+
+npmRebuild: false
+asarUnpack:
+  - "**/*.node"
+
+files:
+  - out/**/*
+  - package.json
+
+fileAssociations:
+  - ext: md
+    name: Markdown Document
+    role: Editor
+  - ext: markdown
+    name: Markdown Document
+    role: Editor
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Cairn
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+    - target: tar.gz
+      arch:
+        - x64
+  category: Utility
+  maintainer: Cairn Contributors <maintainers@cairn.app>
+  icon: build/icon.png

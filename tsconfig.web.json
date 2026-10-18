@@ -18,6 +18,9 @@
   "include": [
     "src/renderer/**/*",
     "src/shared/**/*",
-    "src/preload/index.d.ts"
+    "src/preload/index.d.ts",
+    "tests/unit/katex-math.test.ts",
+    "tests/unit/live-preview.test.ts",
+    "tests/unit/autocomplete.test.ts"
   ]
 }

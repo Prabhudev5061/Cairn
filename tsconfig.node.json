@@ -20,6 +20,11 @@
     "src/preload/**/*",
     "src/preload/index.d.ts",
     "src/shared/**/*",
-    "tests/**/*"
+    "tests/unit/paths.test.ts",
+    "tests/unit/vault-*.test.ts",
+    "tests/unit/graph.test.ts",
+    "tests/unit/indexer.test.ts",
+    "tests/unit/linking.test.ts",
+    "tests/e2e/**/*"
   ]
 }

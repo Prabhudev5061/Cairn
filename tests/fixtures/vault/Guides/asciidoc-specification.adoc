@@ -1,0 +1,41 @@
+= AsciiDoc Integration Specification
+Cairn Core Team
+:description: Technical specification for AsciiDoc parsing and editor streaming in Cairn
+:tags: documentation, spec, formats, asciidoc
+
+== Executive Summary
+
+This document specifies the parsing rules and behavioral expectations for `.adoc` and `.asciidoc`
+files within Cairn vaults. Refer to xref:quantum-state-collapse.typ[Quantum State Collapse].
+
+[NOTE]
+====
+AsciiDoc files participate fully in the knowledge graph, backlink indexing, and full-text search.
+====
+
+== Structural Syntax [#sec-syntax]
+
+AsciiDoc uses level markers (`=`, `==`, `===`) for document and section titles:
+
+- Title level 1: `= Document Title`
+- Section level 2: `== Section Name`
+- Subsection level 3: `=== Detail Subtopic`
+
+=== Cross References and Wikilinks
+
+Traditional AsciiDoc links use `xref:` or inline anchors:
+
+* Cross reference to anchor: <<sec-syntax,Syntax Section>>
+* Cross reference to Typst paper: xref:quantum-state-collapse.typ[Quantum State Collapse]
+* Native Cairn Wikilink: [[cairn-roadmap]]
+* Link to project architecture: [[Project Cairn Architecture]]
+
+[TIP]
+====
+Wikilinks work universally across `.md`, `.org`, `.typ`, and `.adoc` files in Cairn.
+====
+
+== Related Guides
+
+* General introduction: [[welcome]]
+* Mathematical formulas: [[math-and-syntax]]
