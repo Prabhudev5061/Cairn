@@ -1,0 +1,97 @@
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { app, BrowserWindow, session, shell } from 'electron';
+import { registerAppHandlers } from './ipc/app';
+
+// Linux Wayland/X11 auto selection
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('ozone-platform-hint', 'auto');
+}
+
+function getPreloadPath(): string {
+  const cjsPath = join(__dirname, '../preload/index.cjs');
+  if (existsSync(cjsPath)) {
+    return cjsPath;
+  }
+  const mjsPath = join(__dirname, '../preload/index.mjs');
+  if (existsSync(mjsPath)) {
+    return mjsPath;
+  }
+  return join(__dirname, '../preload/index.js');
+}
+
+function createWindow(): void {
+  const mainWindow = new BrowserWindow({
+    width: 900,
+    height: 670,
+    show: false,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: getPreloadPath(),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true
+    }
+  });
+
+  mainWindow.on('ready-to-show', () => {
+    mainWindow.show();
+  });
+
+  // Block in-app navigation and open external links safely
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    event.preventDefault();
+    if (/^https?:|^mailto:/.test(url)) {
+      shell.openExternal(url);
+    }
+  });
+
+  // Block window.open and delegate external links to system browser
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https?:|^mailto:/.test(url)) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
+  });
+
+  // Load renderer
+  const rendererUrl = process.env['ELECTRON_RENDERER_URL'];
+  if (rendererUrl) {
+    mainWindow.loadURL(rendererUrl);
+  } else {
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+  }
+}
+
+app.whenReady().then(() => {
+  // Enforce distinct dev vs production CSP
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    const isDev = !app.isPackaged;
+    const csp = isDev
+      ? "default-src 'none'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws:;"
+      : "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';";
+
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [csp]
+      }
+    });
+  });
+
+  registerAppHandlers();
+  createWindow();
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});

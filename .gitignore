@@ -7,5 +7,6 @@ playwright-report/
 blob-report/
 coverage/
 *.log
+*.tsbuildinfo
 .DS_Store
 Thumbs.db

@@ -1,14 +1,14 @@
 # Setup (Windows and Linux)
 
-Needed: Git, Node.js 22 LTS, pnpm (via Corepack). No Rust or C++ toolchain is required.
+Needed: Git, Node.js 24, pnpm (pnpm@11.28.6). No Rust or C++ toolchain is required.
 
 ## Windows (current)
-1. Install Git for Windows and Node.js 22 LTS.
-2. In a terminal: `corepack enable` then `pnpm -v` (if Corepack is blocked, `npm i -g pnpm`).
+1. Install Git for Windows and Node.js 24.
+2. In a terminal: `corepack enable` then `pnpm -v` (if Corepack is blocked, `npm i -g pnpm@11.28.6`).
 3. `pnpm install` then `pnpm dev`.
 
 ## Linux (Ubuntu or Debian family)
-1. Install Node 22 LTS (via fnm, nvm, or NodeSource), then `corepack enable`.
+1. Install Node 24 (via fnm, nvm, or NodeSource), then `corepack enable` (or `npm i -g pnpm@11.28.6`).
 2. Electron runtime libraries (usually present on a desktop install):
    `sudo apt install -y libgtk-3-0 libnss3 libgbm1 libxss1 xdg-utils` plus `libasound2t64` (Ubuntu 24.04+) or `libasound2` (older).
 3. File watcher limit (large vaults): add `fs.inotify.max_user_watches=524288` to `/etc/sysctl.conf`, then `sudo sysctl -p`.
