@@ -369,9 +369,14 @@ Wait for user testing and explicit approval before any git push or public releas
 (none)
 
 ## Tested on
-| OS | Last verified |
-|---|---|
-| Windows 11 | 2026-10-18 (`pnpm check` passes with 147 unit tests, `pnpm test:e2e` passes with 10 specs) |
-| Ubuntu (CI) | Configured in `.github/workflows/ci.yml` |
-| Linux desktop (manual) | |
+| OS | Last verified | Artifacts Verified |
+|---|---|---|
+| Windows 11 | 2026-10-18 (`pnpm check` 147 unit tests, `pnpm test:e2e` 10 specs, 0 warnings) | `dist/Cairn Setup 0.1.0.exe` (123.9 MB), `win-unpacked` |
+| Linux (Local + CI) | 2026-10-18 (`dist/cairn-0.1.0.tar.gz` 135.3 MB, `linux-unpacked`, CI `.github/workflows/release.yml`) | AppImage, deb, tar.gz |
+| Ubuntu (CI) | Configured in `.github/workflows/ci.yml` & `.github/workflows/release.yml` | Full cross-platform verification |
+
+## Release Artifacts
+- **Windows Installer**: `dist/Cairn Setup 0.1.0.exe`
+- **Linux Distribution**: `dist/cairn-0.1.0.tar.gz` & `dist/linux-unpacked`
+- **Graph Optimization**: Real-time canvas repaint on node size slider adjustments (`ForceGraphCanvas.tsx`).
 
